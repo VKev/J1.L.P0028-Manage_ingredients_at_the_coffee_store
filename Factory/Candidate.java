@@ -1,6 +1,7 @@
 package Factory;
 
 import Utils.CustomInput;
+import Utils.Regex;
 import java.util.ArrayList;
 
 
@@ -8,15 +9,16 @@ public abstract class Candidate {
     protected ArrayList<Attribute> attributes = new ArrayList<>();
     
     
-    public void Input(){
+    public void Input(String content){
         CustomInput input = new CustomInput(); 
         for(Attribute attribute : attributes){
-            attribute.SetValue(input.GetLine("Enter " +attribute.GetName()+": " ));
+            String value = input.RegexBlankHandle(content +attribute.GetName()+": " , Regex.ALL, null);
+            attribute.SetValue(value == null? attribute.GetValue():value );
         }
     };
     
-    
-    public abstract String GetId();
+   
+    public abstract Attribute GetIdAttribute();
     public abstract String ToString();
     public abstract String AttributeTypeToString();
     

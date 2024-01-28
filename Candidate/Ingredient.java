@@ -1,6 +1,7 @@
 package Candidate;
 
 
+import Factory.Attribute;
 import Factory.Candidate;
 import Utils.CustomInput;
 import java.util.ArrayList;
@@ -14,10 +15,10 @@ public class Ingredient extends Candidate {
        this.AddAttribute("name", null);
        this.AddAttribute("amount", null);
     }
-    
+
     @Override
-    public String GetId() {
-        return this.GetAttributeValueString(1);
+    public Attribute GetIdAttribute() {
+        return this.GetAttribute(0);
     }
 
     @Override
@@ -32,4 +33,5 @@ public class Ingredient extends Candidate {
                 ,this.GetAttribute(1).GetName().toUpperCase(),
                 this.GetAttribute(2).GetName().toUpperCase());
     }
+
 }

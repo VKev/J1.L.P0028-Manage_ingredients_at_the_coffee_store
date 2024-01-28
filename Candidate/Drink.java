@@ -1,4 +1,5 @@
 package Candidate;
+import Factory.Attribute;
 import Factory.Candidate;
 import Factory.Manager;
 import Utils.CustomInput;
@@ -11,12 +12,13 @@ public class Drink extends Candidate{
     public Drink(){
        this.AddAttribute("name", null);
     }
-    
-    @Override
-    public String GetId() {
-        return this.GetAttributeValueString(0);
-    }
 
+    @Override
+    public Attribute GetIdAttribute() {
+        return this.GetAttribute(0);
+    }
+    
+    
     @Override
     public String ToString() {
         return null;
@@ -26,5 +28,7 @@ public class Drink extends Candidate{
     public String AttributeTypeToString() {
         return null;
     }
+
+    
 
 }
