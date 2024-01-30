@@ -9,15 +9,13 @@ public class main {
 
     
     public static void main(String[] args) {
-        Manager ingreManager = new Manager<Ingredient>(Ingredient.class);
+        Manager drinkManager = new Manager<Drink>(Drink.class);
         
-        Menu ingreMenu = new Menu(4);
-        ingreMenu.SetOption(0, "1. Add ingredient.", ()->ingreManager.AddCandidate());
-        ingreMenu.SetOption(1, "2. Delete ingredient.", ()->ingreManager.ExecuteIfListNotEmpty( ()->ingreManager.DeleteCandidate() ));
-        ingreMenu.SetOption(2, "3. Update ingredient.", ()->ingreManager.ExecuteIfListNotEmpty( ()->ingreManager.UpdateCandidate() ));
-        ingreMenu.SetOption(3, "4. Show all ingredient.", ()->ingreManager.ExecuteIfListNotEmpty( ()->ingreManager.ShowAll() ));
-        ingreMenu.Start();
-
+        Menu drinkMenu = new Menu(4);
+        drinkMenu.SetTittle("Drink Manager");
+        drinkMenu.SetOption(0, "1. Add drink", ()->drinkManager.AddCandidate());
+        drinkMenu.SetOption(3, "4. Show all drinks.", ()->drinkManager.ExecuteIfListNotEmpty( ()->drinkManager.ShowAll() ));
+        drinkMenu.Start();
         
     }
     

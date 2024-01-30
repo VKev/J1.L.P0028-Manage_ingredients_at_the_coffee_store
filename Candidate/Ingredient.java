@@ -23,15 +23,19 @@ public class Ingredient extends Candidate {
 
     @Override
     public String ToString() {
-       return String.format("%-10s%-20s%-10s", this.GetAttributeValueString(0),this.GetAttributeValueString(1),this.GetAttributeValueString(2) );
+       return String.format("%-10s%-20s%-10s", 
+               this.GetAttributeValueString(0),
+               this.GetAttributeValueString(1),
+               this.GetAttributeValueString(2) );
     }
 
     @Override
-    public String AttributeTypeToString() {
+    public String ToString_AttributeType() {
         return String.format("%-10s%-20s%-10s", 
                 this.GetAttribute(0).GetName().toUpperCase()
                 ,this.GetAttribute(1).GetName().toUpperCase(),
                 this.GetAttribute(2).GetName().toUpperCase());
     }
+
 
 }

@@ -20,7 +20,7 @@ public abstract class Candidate {
    
     public abstract Attribute GetIdAttribute();
     public abstract String ToString();
-    public abstract String AttributeTypeToString();
+    public abstract String ToString_AttributeType();
     
     public Attribute GetAttribute(int index){
         return attributes.get(index);
@@ -28,6 +28,8 @@ public abstract class Candidate {
     public String GetAttributeValueString(int index){
         return attributes.get(index).GetValue().toString();
     }
+    
+    
     
     public void AddAttribute(String name, Object value){
         if(FindAttributeIndexByName(name) == -1)

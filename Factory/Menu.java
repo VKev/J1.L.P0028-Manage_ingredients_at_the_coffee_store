@@ -8,11 +8,15 @@ import java.util.Collections;
 
 public class Menu {
     private int optionAmount;
+    private String tittle;
     private ArrayList<Option> options;
 
     public Menu(int optionAmount) {
         this.optionAmount = optionAmount;
         this.options = new ArrayList<Option>(Collections.nCopies(optionAmount, null));
+    }
+    public void SetTittle(String tittle){
+        this.tittle = tittle;
     }
     
     public void Start(){
@@ -30,6 +34,7 @@ public class Menu {
     }
 
     private void ShowOption(){
+        System.out.println(tittle);
         for(Option option : options)
             if(option != null)
                 option.ShowContent();

@@ -12,7 +12,7 @@ public class Manager<T extends Candidate> {
     public Manager(Class<T> type){
         this.candidateType = type;
     }
-    private T NewInstance(){
+    public T NewInstance(){
         try {
             return candidateType.newInstance();
         } catch (InstantiationException | IllegalAccessException e) {
@@ -20,13 +20,26 @@ public class Manager<T extends Candidate> {
         }
     }
     
-
+    
+    
+    
+    public Candidate GetCandidate(int index){
+        return candidateList.get(index);
+    }
+    public int GetSize(){
+        return candidateList.size();
+    }
+    
+    
+    
     
     public void AddCandidate() {
         T newCandidate = NewInstance();
         newCandidate.Input("Enter ");
         if(FindCandidateIndexById(newCandidate.GetIdAttribute().GetValue().toString()) == -1){
             candidateList.add(newCandidate);
+        }else{
+            System.out.println("Add fail: "+newCandidate.GetIdAttribute().GetName()+" is already exits.");
         }
     }
     public void DeleteCandidate(){
@@ -50,7 +63,7 @@ public class Manager<T extends Candidate> {
             System.out.println("Update fail: "+candidateList.get(0).GetIdAttribute().GetName()+"not found!");
     }
     public void ShowAll(){
-        System.out.println(candidateList.get(0).AttributeTypeToString());
+        System.out.println(candidateList.get(0).ToString_AttributeType());
         for(Candidate candidate : candidateList){
             System.out.println( candidate.ToString() );
         }
