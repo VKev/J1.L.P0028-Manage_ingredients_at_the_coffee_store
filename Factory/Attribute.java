@@ -1,9 +1,12 @@
 
 package Factory;
 
+import Utils.Regex;
+
 public class Attribute {
     private String name;
     private Object value;
+    private String regex = Regex.ALL;
     
     public Attribute(String name, Object value){
         this.name = name;
@@ -23,5 +26,13 @@ public class Attribute {
     
     public void SetName(String name){
         this.name = name;
+    }
+    
+    public void SetRegex(String regex){
+        this.regex = regex;
+    }
+    
+    public String GetRegex(){
+        return this.regex;
     }
 }

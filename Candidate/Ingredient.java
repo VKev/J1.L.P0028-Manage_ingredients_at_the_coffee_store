@@ -4,6 +4,7 @@ package Candidate;
 import Factory.Attribute;
 import Factory.Candidate;
 import Utils.CustomInput;
+import Utils.Regex;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -12,9 +13,10 @@ public class Ingredient extends Candidate {
 
     public Ingredient(){
        this.AddAttribute("code", null);
-       this.AddAttribute("name", null);
-       this.AddAttribute("amount", null);
+       this.AddAttribute("name", null); 
+       this.AddAttribute("amount", null); this.GetAttribute(2).SetRegex(Regex.NUMBER);
     }
+    
 
     @Override
     public Attribute GetIdAttribute() {

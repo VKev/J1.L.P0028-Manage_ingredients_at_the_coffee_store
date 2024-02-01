@@ -9,6 +9,7 @@ import java.util.Collections;
 public class Menu {
     private int optionAmount;
     private String tittle;
+    private String exitContent;
     private ArrayList<Option> options;
 
     public Menu(int optionAmount) {
@@ -17,6 +18,9 @@ public class Menu {
     }
     public void SetTittle(String tittle){
         this.tittle = tittle;
+    }
+    public void SetExitContent(String exitContent){
+        this.exitContent = exitContent;
     }
     
     public void Start(){
@@ -38,12 +42,12 @@ public class Menu {
         for(Option option : options)
             if(option != null)
                 option.ShowContent();
-        System.out.println((optionAmount+1)+". Press any others option to quit.");
+        System.out.println( exitContent);
     }
     
     public void SetOption(int optionNumber, String content ,Runnable action) {
         if (optionNumber <= optionAmount) 
-            options.set(optionNumber, new Option(content,action));
+            options.set(optionNumber, new Option( content,action));
          else 
             System.out.println("Option number exceeds the maximum amount of options.");
     }

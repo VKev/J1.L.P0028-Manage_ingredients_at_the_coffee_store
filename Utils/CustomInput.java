@@ -65,4 +65,7 @@ public class CustomInput {
             errorContent = " "+errorContent;
         }
     }
+    public void SetErrorContentOffset(String offset){
+        this.errorContent = offset+errorContent;
+    }
 }

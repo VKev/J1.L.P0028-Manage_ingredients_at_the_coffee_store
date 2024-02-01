@@ -3,21 +3,24 @@ package Factory;
 import Utils.CustomInput;
 import Utils.Regex;
 import java.util.ArrayList;
+import java.util.stream.Collectors;
 
 
 public abstract class Candidate {
     protected ArrayList<Attribute> attributes = new ArrayList<>();
     
-    
-    public void Input(String content){
+    public void Input(String content, String tittle){
         CustomInput input = new CustomInput(); 
+        if(tittle != null){
+            System.out.println();
+            System.out.println(tittle);
+        }
         for(Attribute attribute : attributes){
-            String value = input.RegexBlankHandle(content +attribute.GetName()+": " , Regex.ALL, null);
+            String value = input.RegexBlankHandle(content +attribute.GetName()+": " ,attribute.GetRegex() , null);
             attribute.SetValue(value == null? attribute.GetValue():value );
         }
     };
-    
-   
+
     public abstract Attribute GetIdAttribute();
     public abstract String ToString();
     public abstract String ToString_AttributeType();
@@ -28,8 +31,7 @@ public abstract class Candidate {
     public String GetAttributeValueString(int index){
         return attributes.get(index).GetValue().toString();
     }
-    
-    
+
     
     public void AddAttribute(String name, Object value){
         if(FindAttributeIndexByName(name) == -1)
