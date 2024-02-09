@@ -6,6 +6,7 @@ package Candidate;
 
 import Factory.Attribute;
 import Factory.Candidate;
+import Utils.CustomInput;
 
 
 public class DispensedDrink extends Candidate{
@@ -31,6 +32,16 @@ public class DispensedDrink extends Candidate{
         return String.format("%-20s%-10s", 
                 this.GetAttribute(0).GetName().toUpperCase(),
                 this.GetAttribute(1).GetName().toUpperCase());
+    }
+    
+    public void InputNoId(String content){
+        CustomInput input = new CustomInput(); 
+        for(Attribute attribute : attributes){
+            if(attribute != GetIdAttribute()){
+                String value = input.RegexBlankHandle(content +attribute.GetName()+": " ,attribute.GetRegex() , null);
+                attribute.SetValue(value == null? attribute.GetValue():value );
+            }
+        }
     }
     
     public int GetAmount(){

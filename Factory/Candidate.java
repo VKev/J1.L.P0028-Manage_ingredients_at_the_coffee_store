@@ -20,6 +20,16 @@ public abstract class Candidate {
             attribute.SetValue(value == null? attribute.GetValue():value );
         }
     };
+    
+    public void InputNoId(String content){
+        CustomInput input = new CustomInput(); 
+        for(Attribute attribute : attributes){
+            if(attribute != GetIdAttribute()){
+                String value = input.RegexBlankHandle(content +attribute.GetName()+": " ,attribute.GetRegex() , null);
+                attribute.SetValue(value == null? attribute.GetValue():value );
+            }
+        }
+    }
 
     public abstract Attribute GetIdAttribute();
     public abstract String ToString();

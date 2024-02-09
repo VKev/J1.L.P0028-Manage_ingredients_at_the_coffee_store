@@ -17,6 +17,12 @@ public class Ingredient extends Candidate {
        this.AddAttribute("amount", null); this.GetAttribute(2).SetRegex(Regex.NUMBER);
     }
     
+    public void Update(Ingredient newIngre){
+        for(int i=0; i <attributes.size();i++){
+            this.GetAttribute(i).SetValue(newIngre.GetAttribute(i).GetValue());
+        }
+    }
+    
 
     @Override
     public Attribute GetIdAttribute() {

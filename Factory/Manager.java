@@ -6,7 +6,7 @@ import java.util.ArrayList;
 
 
 public class Manager<T extends Candidate> {
-    private ArrayList<Candidate> candidateList = new ArrayList<Candidate>();
+    protected ArrayList<Candidate> candidateList = new ArrayList<Candidate>();
     private Class<T> candidateType;
     
     public Manager(Class<T> type){
@@ -30,11 +30,20 @@ public class Manager<T extends Candidate> {
     public Candidate GetCandidate(int index){
         return candidateList.get(index);
     }
+    public void SetCandidate(Candidate newCandi, int index){
+        candidateList.set(index, newCandi);
+    }
     public int GetSize(){
         return candidateList.size();
     }
     public void Add(Candidate newCandidate){
         candidateList.add(newCandidate);
+    }
+    public void Delete(int index){
+        candidateList.remove(index);
+    }
+    public void Delete(Candidate candidate){
+        candidateList.remove(candidate);
     }
     public ArrayList<Candidate> ToList(){
         return candidateList;
@@ -78,9 +87,11 @@ public class Manager<T extends Candidate> {
         if(index != -1){
             candidateList.get(index).Input("Enter new ", null);
             System.out.println("Update success.");
-        }else
+        }else{
             System.out.println("Update fail: "+candidateList.get(0).GetIdAttribute().GetName()+" not found!");
+        }
     }
+
     public void ShowAll(String infrontTittle){
         if(infrontTittle != null){
             System.out.println();

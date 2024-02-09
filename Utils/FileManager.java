@@ -29,6 +29,7 @@ public class FileManager {
         }
     }
     
+    
     public void Writeln(String s){
         try{
             outputStream.writeBytes(s+"\n");
