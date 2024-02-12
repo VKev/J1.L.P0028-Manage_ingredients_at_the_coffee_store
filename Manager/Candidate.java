@@ -1,12 +1,13 @@
-package Factory;
+package Manager;
 
 import Utils.CustomInput;
 import Utils.Regex;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.stream.Collectors;
 
 
-public abstract class Candidate {
+public abstract class Candidate implements Serializable{
     protected ArrayList<Attribute> attributes = new ArrayList<>();
     
     public void Input(String content, String tittle){

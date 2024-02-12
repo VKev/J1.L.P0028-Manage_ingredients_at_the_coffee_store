@@ -2,10 +2,10 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package Candidate;
+package CoffeeStore.Candidate;
 
-import Factory.Attribute;
-import Factory.Candidate;
+import Manager.Attribute;
+import Manager.Candidate;
 import Utils.CustomInput;
 
 

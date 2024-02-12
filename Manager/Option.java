@@ -1,5 +1,5 @@
 
-package Factory;
+package Manager;
 
 public class Option {
     private Runnable action;

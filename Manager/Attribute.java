@@ -1,9 +1,10 @@
 
-package Factory;
+package Manager;
 
 import Utils.Regex;
+import java.io.Serializable;
 
-public class Attribute {
+public class Attribute implements Serializable{
     private String name;
     private Object value;
     private String regex = Regex.ALL;

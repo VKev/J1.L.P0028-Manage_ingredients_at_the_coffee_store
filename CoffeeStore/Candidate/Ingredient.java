@@ -1,8 +1,8 @@
-package Candidate;
+package CoffeeStore.Candidate;
 
 
-import Factory.Attribute;
-import Factory.Candidate;
+import Manager.Attribute;
+import Manager.Candidate;
 import Utils.CustomInput;
 import Utils.Regex;
 import java.util.ArrayList;

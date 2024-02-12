@@ -1,15 +1,16 @@
-package Candidate;
-import Factory.Attribute;
-import Factory.Candidate;
-import Factory.Manager;
-import Factory.Menu;
+package CoffeeStore.Candidate;
+import Manager.Attribute;
+import Manager.Candidate;
+import Manager.Manager;
+import Manager.Menu;
 import Utils.CustomInput;
 import Utils.Regex;
+import java.io.Serializable;
 
 import java.util.ArrayList;
 
-public class Drink extends Candidate{
-    private RecipeManager recipe = new RecipeManager();
+public class Drink extends Candidate implements Serializable{
+    private Recipe recipe = new Recipe();
     
     public Drink(){
        this.AddAttribute("name", null);
@@ -71,11 +72,11 @@ public class Drink extends Candidate{
 
 }
 
-class RecipeManager extends Manager<Ingredient>{
+class Recipe extends Manager<Ingredient> implements Serializable{
     
     private Manager<Ingredient> storage;
     
-    public RecipeManager() {
+    public Recipe() {
         super(Ingredient.class);
     }
     public void AddIngredient(){

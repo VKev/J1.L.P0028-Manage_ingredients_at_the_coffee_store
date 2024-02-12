@@ -1,13 +1,16 @@
-package Factory;
+package Manager;
 
 
 import Utils.CustomInput;
+import Utils.FileManager;
+import java.io.Serializable;
 import java.util.ArrayList;
 
 
-public class Manager<T extends Candidate> {
+public class Manager<T extends Candidate> implements Serializable{
     protected ArrayList<Candidate> candidateList = new ArrayList<Candidate>();
     private Class<T> candidateType;
+    private FileManager fileManager = new FileManager();
     
     public Manager(Class<T> type){
         this.candidateType = type;
@@ -20,6 +23,7 @@ public class Manager<T extends Candidate> {
         }
     }
     
+
     
     public Candidate GetCandidate(String id){
         int index = FindCandidateIndexById(id);
@@ -104,7 +108,6 @@ public class Manager<T extends Candidate> {
         }
     }
     
-    
     public void ExecuteIfListNotEmpty(Runnable action){
         if(candidateList.size() >0)
             action.run();
@@ -118,6 +121,22 @@ public class Manager<T extends Candidate> {
             }
          }
         return -1;
+    }
+    
+    
+    
+    public void CreateFile_ObjectStream(String fileName){
+        fileManager.CreateFile_ObjectStream(fileName);
+    }
+    public void SaveListToFile(){
+        fileManager.ClearAndWriteObject(candidateList);
+    }
+    public void LoadListFromFile(){
+        ArrayList<Candidate> loaddata = (ArrayList<Candidate>) fileManager.GetObject(); 
+        candidateList = loaddata!= null? loaddata : candidateList;
+    }
+    public void CloseFile(){
+        fileManager.CloseFile();
     }
 }
 

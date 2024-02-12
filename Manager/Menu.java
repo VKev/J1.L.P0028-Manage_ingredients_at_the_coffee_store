@@ -1,5 +1,5 @@
 
-package Factory;
+package Manager;
 
 import Utils.CustomInput;
 import Utils.Regex;
