@@ -5,6 +5,7 @@ import CoffeeStore.Candidate.Drink;
 import CoffeeStore.Candidate.Ingredient;
 import Manager.Candidate;
 import Manager.Manager;
+import java.util.ArrayList;
 
 
 public class RecipeManager extends Manager<Drink> {
@@ -31,4 +32,5 @@ public class RecipeManager extends Manager<Drink> {
             }
         }
     }
+    
 }

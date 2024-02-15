@@ -8,6 +8,7 @@ import CoffeeStore.Candidate.Ingredient;
 import Manager.Manager;
 import Utils.CustomInput;
 import Utils.Regex;
+import java.util.ArrayList;
 
 
 public class StorageManager extends Manager<Ingredient> {
@@ -19,26 +20,30 @@ public class StorageManager extends Manager<Ingredient> {
     public void AddIngredient(RecipeManager recipeManager) {
         System.out.println();
         System.out.println("• Add Ingredient");
+        
+        do{
+            CustomInput input = new CustomInput();
+            String code = input.RegexBlankHandle("Enter code: ", Regex.ALL, null);
 
-        CustomInput input = new CustomInput();
-        String code = input.RegexBlankHandle("Enter code: ", Regex.ALL, null);
+            int index = this.FindCandidateIndexById(code);
+            if (index == -1) {
+                Ingredient newIngre = new Ingredient();
+                newIngre.GetAttribute(0).SetValue(code);
+                newIngre.InputNoId("Enter ");
+                this.Add(newIngre);
 
-        int index = this.FindCandidateIndexById(code);
-        if (index == -1) {
-            Ingredient newIngre = new Ingredient();
-            newIngre.GetAttribute(0).SetValue(code);
-            newIngre.InputNoId("Enter ");
-            this.Add(newIngre);
-
-            recipeManager.UpdateRecipeOfAllDrink(code, newIngre);
-
-            System.out.println("Add success!");
-        } else {
-            System.out.println("Add fail: code already exist!");
-        }
+                recipeManager.UpdateRecipeOfAllDrink(code, newIngre);
+                System.out.println("Add success!");
+            } else {
+                System.out.println("Add fail: code already exist!");
+            }
+            String continu = input.Regex("Add more ingredient(Y/N)?",Regex.YESNO , null);
+            if(continu.equals("n") || continu.equals("N"))
+                break;
+        }while(true);
     }
 
-    public void UpdateIngredient(RecipeManager recipeManager) {
+    public int UpdateIngredient(RecipeManager recipeManager) {
         System.out.println();
         System.out.println("• Update Ingredient");
 
@@ -59,6 +64,8 @@ public class StorageManager extends Manager<Ingredient> {
             }
             newcode = newcode == null ? code : newcode;
             newIngre.GetAttribute(0).SetValue(newcode);
+            newIngre.GetAttribute(1).SetValue(this.GetCandidate(index).GetAttribute(1).GetValue());
+            newIngre.GetAttribute(2).SetValue(this.GetCandidate(index).GetAttribute(2).GetValue());
             newIngre.InputNoId("Enter new ");
 
             ((Ingredient) this.GetCandidate(index)).Update(newIngre);
@@ -67,6 +74,7 @@ public class StorageManager extends Manager<Ingredient> {
         } else {
             System.out.println("Update fail: code not found!");
         }
+        return index;
     }
 
 }

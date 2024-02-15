@@ -7,13 +7,14 @@ package CoffeeStore.Candidate;
 import Manager.Attribute;
 import Manager.Candidate;
 import Utils.CustomInput;
+import Utils.Regex;
 
 
 public class DispensedDrink extends Candidate{
 
     public DispensedDrink(){
         this.AddAttribute("name", null);
-        this.AddAttribute("quantity", null);
+        this.AddAttribute("quantity", null); this.GetAttribute(1).SetRegex(Regex.NUMBER);
     }
     
     

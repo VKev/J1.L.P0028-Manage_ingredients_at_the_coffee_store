@@ -23,33 +23,40 @@ public class CoffeeStore {
     private Menu mainMenu;
     private Menu storageMenu;
     private Menu recipesMenu;
-    private Menu DispensingMenu;
+    private Menu dispensingMenu;
+    private Menu reportMenu;
 
     public CoffeeStore() {
         storageMenu = new Menu(4);
         storageMenu.SetTittle("★ Edit Ingredient Storage.");
         storageMenu.SetOption(0, "1. Add ingredient.", () -> {storage.AddIngredient(recipes); storage.SaveListToFile();});
         storageMenu.SetOption(1, "2. Delete ingredient.", () -> {storage.ExecuteIfListNotEmpty(() -> storage.DeleteCandidate("• Delete ")); ; storage.SaveListToFile();});
-        storageMenu.SetOption(2, "3. Update ingredient.", () -> {storage.ExecuteIfListNotEmpty(() -> storage.UpdateIngredient(recipes)); storage.SaveListToFile();});
-        storageMenu.SetOption(3, "4. Show all ingredient.", () -> storage.ExecuteIfListNotEmpty(() -> storage.ShowAll("• Show ")));
+        storageMenu.SetOption(2, "3. Update ingredient.", () -> {storage.ExecuteIfListNotEmpty(() ->  ShowAfterUpdate(storage,storage.UpdateIngredient(recipes))); storage.SaveListToFile();});
+        storageMenu.SetOption(3, "4. Show all ingredient.", () -> storage.ExecuteIfListNotEmpty(() -> {storage.SortByAttribute_Ascending(1); storage.ShowAll("• Show ");}));
         storageMenu.SetExitContent("5. Choose any other options to exit.");
 
         recipesMenu = new Menu(4);
         recipesMenu.SetTittle("★ Edit Beverage Recipes.");
         recipesMenu.SetOption(0, "1. Add new recipe.", () -> {recipes.AddRecipe(this.storage); recipes.SaveListToFile();});
         recipesMenu.SetOption(1, "2. Delete recipe.", () -> {recipes.ExecuteIfListNotEmpty(() -> recipes.DeleteCandidate("• Delete ")); recipes.SaveListToFile();});
-        recipesMenu.SetOption(2, "3. Update recipe.", () -> {recipes.ExecuteIfListNotEmpty(() -> recipes.UpdateCandidate("• Update ")); recipes.SaveListToFile();});
-        recipesMenu.SetOption(3, "4. Show all recipe.", () -> recipes.ExecuteIfListNotEmpty(() -> recipes.ShowAll("• Show ")));
+        recipesMenu.SetOption(2, "3. Update recipe.", () -> {recipes.ExecuteIfListNotEmpty(() -> ShowAfterUpdate(recipes,recipes.UpdateCandidate("• Update "))); recipes.SaveListToFile();});
+        recipesMenu.SetOption(3, "4. Show all recipe.", () -> recipes.ExecuteIfListNotEmpty(() -> {recipes.SortByAttribute_Ascending(0); recipes.ShowAll("• Show ");}));
         recipesMenu.SetExitContent("5. Choose any others option to exit.");
 
-        DispensingMenu = new Menu(3);
-        DispensingMenu.SetTittle("★ Dispensing Beverage.");
-        DispensingMenu.SetOption(0, "1. Dispense beverage.", () -> {dispensingManager.DispensingDrink(this.recipes, this.storage); dispensingManager.SaveListToFile();});
-        DispensingMenu.SetOption(1, "2. Update beverage.", () -> {dispensingManager.UpdateDispensingDrink(this.recipes, this.storage); dispensingManager.SaveListToFile();});
-        DispensingMenu.SetOption(2, "3. Show all beverage.", () -> dispensingManager.ShowAll("• Show "));
-        DispensingMenu.SetExitContent("4. Choose any others option to exit.");
+        dispensingMenu = new Menu(3);
+        dispensingMenu.SetTittle("★ Dispensing Beverage.");
+        dispensingMenu.SetOption(0, "1. Dispense beverage.", () -> {dispensingManager.DispensingDrink(this.recipes, this.storage); dispensingManager.SaveListToFile();});
+        dispensingMenu.SetOption(1, "2. Update beverage.", () ->dispensingManager.ExecuteIfListNotEmpty(()-> {ShowAfterUpdate(dispensingManager,dispensingManager.UpdateDispensingDrink(this.recipes, this.storage)); dispensingManager.SaveListToFile();}));
+        dispensingMenu.SetOption(2, "3. Show all beverage.", ()-> dispensingManager.ExecuteIfListNotEmpty(()-> {dispensingManager.SortByAttribute_Ascending(0);dispensingManager.ShowAll("• Show ");}));
+        dispensingMenu.SetExitContent("4. Choose any others option to exit.");
 
-        mainMenu = new Menu(3);
+        reportMenu = new Menu(3);
+        reportMenu.SetTittle("★ Report.");
+        reportMenu.SetOption(0, "1. Ingredients are available.", ()->ReportIngredient());
+        reportMenu.SetOption(1, "2. Drinks which are unavailable.", ()->ReportDrink());
+        reportMenu.SetExitContent("4. Choose any others option to exit.");
+        
+        mainMenu = new Menu(4);
         mainMenu.SetTittle("✸ Coffee Store.");
         mainMenu.SetOption(0, "1. Edit Ingredient Storage.", () -> {
             System.out.println();
@@ -61,9 +68,13 @@ public class CoffeeStore {
         });
         mainMenu.SetOption(2, "3. Dispensing Beverage.", () -> {
             System.out.println();
-            DispensingMenu.Start();
+            dispensingMenu.Start();
         });
-        mainMenu.SetExitContent("4. Choose any others option to exit.");
+        mainMenu.SetOption(3, "4. Report.", () -> {
+            System.out.println();
+            reportMenu.Start();
+        });
+        mainMenu.SetExitContent("5. Choose any others option to exit.");
 
     }
 
@@ -82,5 +93,72 @@ public class CoffeeStore {
         storage.CloseFile();
         recipes.CloseFile();
         dispensingManager.CloseFile();
+    }
+    
+    private void ShowAfterUpdate(Manager manager, int index){
+        if(index != -1){
+            System.out.println("\nAFTER UPDATE:");
+            System.out.println(manager.GetCandidate(index).ToString_AttributeType());
+            System.out.println(manager.GetCandidate(index).ToString());
+        }
+        
+    }
+    
+    private void ReportIngredient(){
+        boolean firstAvailable = false;
+        for(Candidate candi : storage.ToList()){
+            Ingredient ingre = (Ingredient)candi;
+            boolean available = false;
+            for(Candidate drink : recipes.ToList()){
+                Drink dri = (Drink)drink;
+                Ingredient ingreInRecipe = (Ingredient)(dri.GetRecipe().GetCandidate(ingre.GetIdAttribute().GetValue().toString()));
+                if(ingreInRecipe != null){
+                    int amountInRecipe = Integer.parseInt( ingreInRecipe.GetAttribute(2).GetValue().toString());
+                    int amountInStorage = Integer.parseInt(ingre.GetAttribute(2).GetValue().toString());
+                    if(amountInStorage >= amountInRecipe){
+                        available = true;
+                        break;
+                    }
+                }
+            }
+            if(available){
+                if(!firstAvailable){
+                    firstAvailable = true;
+                    System.out.println("\nAvailable ingredient:");
+                    System.out.println(ingre.ToString_AttributeType());
+                }
+                System.out.println(ingre.ToString());
+            }
+        }
+        
+        if(!firstAvailable) System.out.println("\nAll ingredient are unavailable!");
+    }
+    
+    private void ReportDrink(){
+        boolean firstUnavailable = false;
+        for(Candidate candi : storage.ToList()){
+            Ingredient ingre = (Ingredient)candi;
+            for(Candidate drink : recipes.ToList()){
+                Drink dri = (Drink)drink;
+                if(dri.GetAvailable() == false) continue;
+                Ingredient ingreInRecipe = (Ingredient)(dri.GetRecipe().GetCandidate(ingre.GetIdAttribute().GetValue().toString()));
+                if(ingreInRecipe != null){
+                    int amountInRecipe = Integer.parseInt( ingreInRecipe.GetAttribute(2).GetValue().toString());
+                    int amountInStorage = Integer.parseInt(ingre.GetAttribute(2).GetValue().toString());
+                    if(amountInStorage < amountInRecipe){
+                        dri.SetAvailable(false);
+                        if(!firstUnavailable){
+                            firstUnavailable = true;
+                            System.out.println("\nUnavailable recipe:");
+                            System.out.println(dri.ToString_AttributeType());
+                        }
+                        System.out.println(dri.ToString());
+                    }
+                }
+            }
+        }
+        
+        if(!firstUnavailable) System.out.println("\nAll recipe is available");
+        for(Candidate drink : recipes.ToList()) ((Drink)drink).SetAvailable(true);
     }
 }

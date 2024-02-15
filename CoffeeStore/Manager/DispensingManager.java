@@ -62,18 +62,19 @@ public class DispensingManager extends Manager<DispensedDrink> {
 
     }
 
-    public void UpdateDispensingDrink(Manager<Drink> recipes, Manager<Ingredient> storage) {
+    public int UpdateDispensingDrink(Manager<Drink> recipes, Manager<Ingredient> storage) {
         System.out.println("\n★ Update dispensed beverage");
         CustomInput input = new CustomInput();
         String name = input.RegexBlankHandle("Enter beverage name: ", Regex.ALL, null);
         int index = this.FindCandidateIndexById(name);
         if (index == -1) {
             System.out.println("Update fail: name not found!");
-            return;
+            return -1;
         }
 
         DispensedDrink newDispensedDrink = new DispensedDrink();
         newDispensedDrink.GetAttribute(0).SetValue(name);
+        newDispensedDrink.GetAttribute(1).SetValue(this.GetCandidate(index).GetAttribute(1).GetValue());
 
         Drink dispensingDrink = (Drink) recipes.GetCandidate(newDispensedDrink.GetIdAttribute().GetValue().toString());
         if (dispensingDrink != null) {
@@ -100,11 +101,14 @@ public class DispensingManager extends Manager<DispensedDrink> {
                 this.SetCandidate(newDispensedDrink, index);
                 storage.SaveListToFile();
                 System.out.println("Update Success.");
+                return index;
             } else {
                 System.out.println("Update fail: Not enough ingredients.");
+                return -1;
             }
         } else {
             System.out.println("Update fail: No recipe for this bevarage.");
+            return -1;
         }
     }
 

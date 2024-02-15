@@ -45,5 +45,4 @@ public class Ingredient extends Candidate {
                 this.GetAttribute(2).GetName().toUpperCase());
     }
 
-
 }

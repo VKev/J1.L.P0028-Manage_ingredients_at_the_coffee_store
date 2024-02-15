@@ -80,7 +80,7 @@ public class Manager<T extends Candidate> implements Serializable{
         }else
             System.out.println("Delete fail: "+candidateList.get(0).GetIdAttribute().GetName()+" not found!");
     }
-    public void UpdateCandidate(String infrontTittle){
+    public int UpdateCandidate(String infrontTittle){
         if(infrontTittle != null){
             System.out.println();
             System.out.println(infrontTittle+ candidateType.getSimpleName());
@@ -94,8 +94,8 @@ public class Manager<T extends Candidate> implements Serializable{
         }else{
             System.out.println("Update fail: "+candidateList.get(0).GetIdAttribute().GetName()+" not found!");
         }
+        return index;
     }
-
     public void ShowAll(String infrontTittle){
         if(infrontTittle != null){
             System.out.println();
@@ -106,6 +106,12 @@ public class Manager<T extends Candidate> implements Serializable{
         for(Candidate candidate : candidateList){
             System.out.println(candidate.ToString() );
         }
+    }
+    public void SortByAttribute_Ascending(int attributeIndex){
+        candidateList.sort((a1,a2)->a1.GetAttribute(attributeIndex).GetValue().toString().compareTo(a2.GetAttribute(attributeIndex).GetValue().toString()));
+    }
+    public void SortByAttribute_Decending(int attributeIndex){
+        candidateList.sort((a1,a2)->a2.GetAttribute(attributeIndex).GetValue().toString().compareTo(a1.GetAttribute(attributeIndex).GetValue().toString()));
     }
     
     public void ExecuteIfListNotEmpty(Runnable action){
