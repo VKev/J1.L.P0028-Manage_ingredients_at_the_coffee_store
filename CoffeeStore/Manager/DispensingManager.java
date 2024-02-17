@@ -1,7 +1,7 @@
 
 package CoffeeStore.Manager;
 
-import CoffeeStore.Candidate.DispensedDrink;
+import CoffeeStore.Candidate.DispensingDrink;
 import CoffeeStore.Candidate.Drink;
 import CoffeeStore.Candidate.Ingredient;
 import Manager.Candidate;
@@ -10,10 +10,10 @@ import Utils.CustomInput;
 import Utils.Regex;
 import java.util.ArrayList;
 
-public class DispensingManager extends Manager<DispensedDrink> {
+public class DispensingManager extends Manager<DispensingDrink> {
 
     public DispensingManager() {
-        super(DispensedDrink.class);
+        super(DispensingDrink.class);
     }
 
     public void DispensingDrink(Manager<Drink> recipes, Manager<Ingredient> storage) {
@@ -25,10 +25,10 @@ public class DispensingManager extends Manager<DispensedDrink> {
             return;
         }
 
-        DispensedDrink newDispensedDrink = new DispensedDrink();
+        DispensingDrink newDispensedDrink = new DispensingDrink();
         newDispensedDrink.GetIdAttribute().SetValue(name);
         Drink dispensingDrink = (Drink) recipes.GetCandidate(newDispensedDrink.GetIdAttribute().GetValue().toString());
-        if (dispensingDrink == null) {
+        if (dispensingDrink == null || dispensingDrink.GetRecipe().GetSize()==0) {
             System.out.println("Dispensing fail: No recipe for this bevarage.");
             return;
         }
@@ -72,7 +72,7 @@ public class DispensingManager extends Manager<DispensedDrink> {
             return -1;
         }
 
-        DispensedDrink newDispensedDrink = new DispensedDrink();
+        DispensingDrink newDispensedDrink = new DispensingDrink();
         newDispensedDrink.GetAttribute(0).SetValue(name);
         newDispensedDrink.GetAttribute(1).SetValue(this.GetCandidate(index).GetAttribute(1).GetValue());
 
@@ -86,7 +86,7 @@ public class DispensingManager extends Manager<DispensedDrink> {
                 Candidate ingreInStorage = storage.GetCandidate(ingreInRecipe.GetIdAttribute().GetValue().toString());
                 int amountInStorage = Integer.parseInt(ingreInStorage.GetAttribute(2).GetValue().toString());
                 int amountInRecipe = Integer.parseInt(ingreInRecipe.GetAttribute(2).GetValue().toString());
-                newAmount.add(amountInStorage - amountInRecipe * (newDispensedDrink.GetAmount() - ((DispensedDrink) this.GetCandidate(index)).GetAmount()));
+                newAmount.add(amountInStorage - amountInRecipe * (newDispensedDrink.GetAmount() - ((DispensingDrink) this.GetCandidate(index)).GetAmount()));
                 if (newAmount.get(newAmount.size() - 1) < 0) {
                     canDispensing = false;
                     break;

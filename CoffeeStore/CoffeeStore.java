@@ -4,7 +4,7 @@ package CoffeeStore;
 import CoffeeStore.Manager.DispensingManager;
 import CoffeeStore.Manager.RecipeManager;
 import CoffeeStore.Manager.StorageManager;
-import CoffeeStore.Candidate.DispensedDrink;
+import CoffeeStore.Candidate.DispensingDrink;
 import CoffeeStore.Candidate.Drink;
 import CoffeeStore.Candidate.Ingredient;
 import Manager.Candidate;
@@ -54,6 +54,7 @@ public class CoffeeStore {
         reportMenu.SetTittle("★ Report.");
         reportMenu.SetOption(0, "1. Ingredients are available.", ()->ReportIngredient());
         reportMenu.SetOption(1, "2. Drinks which are unavailable.", ()->ReportDrink());
+        reportMenu.SetOption(2, "3. Show all dispensing drinks information.", ()->ReportDispensingDrink());
         reportMenu.SetExitContent("4. Choose any others option to exit.");
         
         mainMenu = new Menu(4);
@@ -160,5 +161,21 @@ public class CoffeeStore {
         
         if(!firstUnavailable) System.out.println("\nAll recipe is available");
         for(Candidate drink : recipes.ToList()) ((Drink)drink).SetAvailable(true);
+    }
+    
+    private void ReportDispensingDrink(){
+        boolean first = false;
+        if(dispensingManager.GetSize()>0){
+            System.out.println("\nAll dispensing drink information:");
+            System.out.println(String.format("%-35s%-80s", "DRINK", "RECIPE")+"\n"+new String(new char[40]).replaceAll("\0", "─"));
+            DispensingDrink dispensingdrink = new DispensingDrink();
+            System.out.println(dispensingdrink.ToString_AttributeType()+((Drink)recipes.GetCandidate(0)).ReportTittle());
+            for(Candidate candi : dispensingManager.ToList()){
+                DispensingDrink dispensedDrink = (DispensingDrink)candi;
+                System.out.println(dispensedDrink.ToString()+((Drink)recipes.GetCandidate(dispensedDrink.GetAttributeValueString(0))).ReportContent());
+            }
+        }
+        else
+            System.out.println("\nNot found any dispensing drink");
     }
 }

@@ -10,9 +10,9 @@ import Utils.CustomInput;
 import Utils.Regex;
 
 
-public class DispensedDrink extends Candidate{
+public class DispensingDrink extends Candidate{
 
-    public DispensedDrink(){
+    public DispensingDrink(){
         this.AddAttribute("name", null);
         this.AddAttribute("quantity", null); this.GetAttribute(1).SetRegex(Regex.NUMBER);
     }
@@ -25,12 +25,12 @@ public class DispensedDrink extends Candidate{
 
     @Override
     public String ToString() {
-        return String.format("%-20s%-10s", this.GetAttributeValueString(0),this.GetAttributeValueString(1));
+        return String.format("%-20s%-15s", this.GetAttributeValueString(0),this.GetAttributeValueString(1));
     }
 
     @Override
     public String ToString_AttributeType() {
-        return String.format("%-20s%-10s", 
+        return String.format("%-20s%-15s", 
                 this.GetAttribute(0).GetName().toUpperCase(),
                 this.GetAttribute(1).GetName().toUpperCase());
     }

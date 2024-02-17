@@ -42,15 +42,15 @@ public class Drink extends Candidate implements Serializable {
     public String ToString() {
         String result = "";
         if (recipe.GetSize() == 0) {
-            return "  " + String.format("%-20s", this.GetAttributeValueString(0)) + String.format("%-10s%-20s%-10s\n", "X", "X", "X");
+            return  String.format("%-20s", this.GetAttributeValueString(0)) + String.format("%-10s%-20s%-10s\n", "X", "X", "X");
         }
 
-        result += recipe.GetSize() == 1 ? "  " + String.format("%-20s", this.GetAttributeValueString(0)) + recipe.GetCandidate(0).ToString()
-                : "  " + String.format("%-20s", this.GetAttributeValueString(0)) + recipe.GetCandidate(0).ToString() + "\n";
+        result += recipe.GetSize() == 1 ?  String.format("%-20s", this.GetAttributeValueString(0)) + recipe.GetCandidate(0).ToString()
+                :  String.format("%-20s", this.GetAttributeValueString(0)) + recipe.GetCandidate(0).ToString() + "\n";
         for (int i = 1; i < recipe.GetSize() - 1; i++) {
-            result += "  " + String.format("%-20s", "") + recipe.GetCandidate(i).ToString() + "\n";
+            result +=  String.format("%-20s", "") + recipe.GetCandidate(i).ToString() + "\n";
         }
-        result += recipe.GetSize() > 1 ? "  " + String.format("%-20s", "") + recipe.GetCandidate(recipe.GetSize() - 1).ToString() : "";
+        result += recipe.GetSize() > 1 ?  String.format("%-20s", "") + recipe.GetCandidate(recipe.GetSize() - 1).ToString() : "";
 
         return result + "\n";
     }
@@ -58,11 +58,31 @@ public class Drink extends Candidate implements Serializable {
     @Override
     public String ToString_AttributeType() {
 
-        String result = "  " + String.format("%-20s%-40s", "DRINK", "RECIPE") + "\n"
-                + "  " + new String(new char[35]).replaceAll("\0", "─") + "\n"
-                + "  " + String.format("%-20s", this.GetAttribute(0).GetName().toUpperCase())
+        String result =  String.format("%-20s%-40s", "DRINK", "RECIPE") + "\n"
+                +  new String(new char[35]).replaceAll("\0", "─") + "\n"
+                + String.format("%-20s", this.GetAttribute(0).GetName().toUpperCase())
                 + recipe.NewInstance().ToString_AttributeType();
         return result;
+    }
+    
+    public String ReportTittle(){
+        return recipe.NewInstance().ToString_AttributeType();
+    }
+    
+    public String ReportContent() {
+        String result = "";
+        if (recipe.GetSize() == 0) {
+            return String.format("%-10s%-20s%-10s\n", "X", "X", "X");
+        }
+
+        result += recipe.GetSize() == 1 ? recipe.GetCandidate(0).ToString()
+                :  recipe.GetCandidate(0).ToString() + "\n";
+        for (int i = 1; i < recipe.GetSize() - 1; i++) {
+            result +=  String.format("%-35s","") + recipe.GetCandidate(i).ToString() + "\n";
+        }
+        result += recipe.GetSize() > 1 ?  String.format("%-35s","") + recipe.GetCandidate(recipe.GetSize() - 1).ToString() : "";
+
+        return result + "\n";
     }
 
     public Manager<Ingredient> GetRecipe() {
@@ -83,7 +103,6 @@ public class Drink extends Candidate implements Serializable {
     public boolean GetAvailable(){
         return this.isAvailable;
     }
-
 }
 
 
