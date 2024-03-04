@@ -9,6 +9,7 @@ import Manager.Manager;
 import Utils.CustomInput;
 import Utils.Regex;
 import java.util.ArrayList;
+import java.util.Random;
 
 
 public class StorageManager extends Manager<Ingredient> {
@@ -16,6 +17,7 @@ public class StorageManager extends Manager<Ingredient> {
     public StorageManager() {
         super(Ingredient.class);
     }
+    
 
     public void AddIngredient(RecipeManager recipeManager) {
         System.out.println();
@@ -29,10 +31,22 @@ public class StorageManager extends Manager<Ingredient> {
             if (index == -1) {
                 Ingredient newIngre = new Ingredient();
                 newIngre.GetAttribute(0).SetValue(code);
-                newIngre.InputNoId("Enter ");
+                Ingredient oldIngre = recipeManager.ContainIngre(code);
+                if(oldIngre != null){
+                    System.out.println("Code already in recipes!");
+                    String res = input.Regex("Do you want to keep old infomation(Y) or update all recipes's ingredient to new infomation(N): ", Regex.YESNO, null);
+                    if(res.equals("n") || res.equals("N")){
+                        newIngre.InputNoId("Enter ");
+                        recipeManager.UpdateRecipeOfAllDrink(code, newIngre);
+                    }else{
+                        String amount = input.Regex("Enter new amount: ", Regex.NUMBER, null);
+                        newIngre.GetAttribute(2).SetValue(amount);
+                        newIngre.GetAttribute(1).SetValue(oldIngre.GetAttribute(1));
+                    }
+                    
+                }else
+                    newIngre.InputNoId("Enter ");
                 this.Add(newIngre);
-
-                recipeManager.UpdateRecipeOfAllDrink(code, newIngre);
                 System.out.println("Add success!");
             } else {
                 System.out.println("Add fail: code already exist!");
@@ -42,7 +56,6 @@ public class StorageManager extends Manager<Ingredient> {
                 break;
         }while(true);
     }
-
     public int UpdateIngredient(RecipeManager recipeManager) {
         System.out.println();
         System.out.println("• Update Ingredient");

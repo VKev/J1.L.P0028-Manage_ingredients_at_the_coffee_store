@@ -43,12 +43,13 @@ public class CoffeeStore {
         recipesMenu.SetOption(3, "4. Show all recipe.", () -> recipes.ExecuteIfListNotEmpty(() -> {recipes.SortByAttribute_Ascending(0); recipes.ShowAll("• Show ");}));
         recipesMenu.SetExitContent("5. Choose any others option to exit.");
 
-        dispensingMenu = new Menu(3);
+        dispensingMenu = new Menu(4);
         dispensingMenu.SetTittle("★ Dispensing Beverage.");
         dispensingMenu.SetOption(0, "1. Dispense beverage.", () -> {dispensingManager.DispensingDrink(this.recipes, this.storage); dispensingManager.SaveListToFile();});
         dispensingMenu.SetOption(1, "2. Update beverage.", () ->dispensingManager.ExecuteIfListNotEmpty(()-> {ShowAfterUpdate(dispensingManager,dispensingManager.UpdateDispensingDrink(this.recipes, this.storage)); dispensingManager.SaveListToFile();}));
-        dispensingMenu.SetOption(2, "3. Show all beverage.", ()-> dispensingManager.ExecuteIfListNotEmpty(()-> {dispensingManager.SortByAttribute_Ascending(0);dispensingManager.ShowAll("• Show ");}));
-        dispensingMenu.SetExitContent("4. Choose any others option to exit.");
+        dispensingMenu.SetOption(2, "3. Delete recipe.", () -> {dispensingManager.ExecuteIfListNotEmpty(() -> dispensingManager.DeleteCandidate("• Delete ")); dispensingManager.SaveListToFile();});
+        dispensingMenu.SetOption(3, "4. Show all beverage.", ()-> dispensingManager.ExecuteIfListNotEmpty(()-> {dispensingManager.SortByAttribute_Ascending(0);dispensingManager.ShowAll("• Show ");}));
+        dispensingMenu.SetExitContent("5. Choose any others option to exit.");
 
         reportMenu = new Menu(3);
         reportMenu.SetTittle("★ Report.");
@@ -172,7 +173,11 @@ public class CoffeeStore {
             System.out.println(dispensingdrink.ToString_AttributeType()+((Drink)recipes.GetCandidate(0)).ReportTittle());
             for(Candidate candi : dispensingManager.ToList()){
                 DispensingDrink dispensedDrink = (DispensingDrink)candi;
-                System.out.println(dispensedDrink.ToString()+((Drink)recipes.GetCandidate(dispensedDrink.GetAttributeValueString(0))).ReportContent());
+                if(recipes.GetCandidate(dispensedDrink.GetAttributeValueString(0))!= null)
+                    System.out.println(dispensedDrink.ToString()+((Drink)recipes.GetCandidate(dispensedDrink.GetAttributeValueString(0))).ReportContent());
+                else{
+                    System.out.println(dispensedDrink.ToString() +"NO RECIPE AVAILABLE\n");
+                }
             }
         }
         else

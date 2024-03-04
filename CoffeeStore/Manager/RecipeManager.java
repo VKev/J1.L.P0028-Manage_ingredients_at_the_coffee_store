@@ -33,4 +33,15 @@ public class RecipeManager extends Manager<Drink> {
         }
     }
     
+    public Ingredient ContainIngre(String code){
+        for (Candidate drink : candidateList) {
+            Manager<Ingredient> recipe = ((Drink) drink).GetRecipe();
+            Ingredient matchIngre = (Ingredient) recipe.GetCandidate(code);
+            if (matchIngre != null) {
+                return matchIngre;
+            }
+        }
+        return null;
+    }
+    
 }
